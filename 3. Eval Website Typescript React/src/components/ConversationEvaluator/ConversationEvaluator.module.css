@@ -1,0 +1,80 @@
+/**
+ * Conversation Evaluator Component Styles
+ */
+
+.card {
+  padding: 2rem;
+  background-color: var(--colorNeutralBackground1);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--colorNeutralStroke2);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.message {
+  margin-top: 1.5rem;
+}
+
+.info {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: var(--colorNeutralBackground2);
+  border-radius: 6px;
+  border-left: 3px solid var(--colorBrandBackground);
+}
+
+.infoText {
+  color: var(--colorNeutralForeground2);
+  line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card {
+    padding: 1.5rem;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .actions > button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,61 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+*.zip
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+*.temp
+.temp/
+.tmp/
+
+# Azure Functions
+local.settings.json
+__blobstorage__/
+__queuestorage__/
+__azurite_db*__.json
+
+# OS files
+Thumbs.db
+desktop.ini
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Debug files
+*.pdb
+
+# Backup files
+*.bak
+*.backup
+*~.nib
+
+# Deployment files
+deployment.zip
+deploy-v4.zip
