@@ -7,10 +7,10 @@ const fetch = require('node-fetch');
 
 class DynamicsAuthManager {
     constructor() {
-        this.clientId = process.env.DYNAMICS_CLIENT_ID || '181394b5-fd82-419c-ab77-519357759174';
-        this.tenantId = process.env.DYNAMICS_TENANT_ID || 'feb8fbd8-4ca4-49c3-ad23-e850698df893';
-        this.clientSecret = process.env.DYNAMICS_CLIENT_SECRET || 'n1w8Q~9MNg0_EBy4PMFjIpFzGf2KHYDgNjIpddbz';
-        this.dynamicsUrl = process.env.DYNAMICS_INSTANCE_URL || 'https://blackwoods-dev.crm6.dynamics.com';
+        this.clientId = process.env.DYNAMICS_CLIENT_ID;
+        this.tenantId = process.env.DYNAMICS_TENANT_ID;
+        this.clientSecret = process.env.DYNAMICS_CLIENT_SECRET;
+        this.dynamicsUrl = process.env.DYNAMICS_INSTANCE_URL;
         
         this.token = null;
         this.tokenExpiry = null;
