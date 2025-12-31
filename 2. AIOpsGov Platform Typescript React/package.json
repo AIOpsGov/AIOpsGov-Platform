@@ -1,0 +1,47 @@
+{
+  "name": "aiopsgov-ai-metrics-hub",
+  "version": "1.0.0",
+  "description": "AIOpsGov AI Metrics Hub - React TypeScript application for conversation evaluation with Azure integration",
+  "private": true,
+  "dependencies": {
+    "@fluentui/react-components": "^9.47.0",
+    "@fluentui/react-icons": "^2.0.237",
+    "@tanstack/react-query": "^5.17.0",
+    "axios": "^1.6.5",
+    "baseline-browser-mapping": "^2.9.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.9.4",
+    "serve": "^14.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.3.3",
+    "vite": "^7.3.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --config vite.config.optimized.ts",
+    "build:check": "tsc && vite build --config vite.config.optimized.ts",
+    "build:standard": "vite build",
+    "preview": "vite preview",
+    "lint": "tsc --noEmit",
+    "start": "serve -s dist -l $PORT",
+    "serve": "serve -s dist -p 3000"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

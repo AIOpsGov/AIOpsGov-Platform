@@ -1,0 +1,35 @@
+.statCard {
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+}
+
+.label {
+  color: #666666;
+  font-weight: 500;
+}
+
+.value {
+  line-height: 1;
+}
+
+.small {
+  min-height: 80px;
+}
+
+.medium {
+  min-height: 100px;
+}
+
+.large {
+  min-height: 120px;
+}

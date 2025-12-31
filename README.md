@@ -1,498 +1,473 @@
-# AI-Powered Conversation Evaluation System
+# Dashboard Management Guide - Adding and Removing Dashboards
 
-A comprehensive solution for automated evaluation of customer service conversations using Azure OpenAI, Application Insights, and Azure Automation. This system combines a React TypeScript frontend, Azure Functions backend, and PowerShell-based evaluation engine to provide intelligent conversation quality assessment.
+## Overview
 
-## 🎯 Overview
+This platform uses a **config-driven architecture** that makes adding and removing dashboards simple and maintainable. You can easily copy existing dashboards as templates and customize them for new use cases.
 
-This project enables automated, scalable evaluation of customer service conversations across multiple quality dimensions including helpfulness, professionalism, relevancy, and problem resolution. Built for organizations using Microsoft Copilot or similar AI-powered customer service tools.
+## Architecture Components
 
-## 📋 Table of Contents
+### 1. Dashboard Configuration (`dashboardConfigs.ts`)
+- **Purpose**: Defines metadata for each dashboard
+- **Controls**: What tiles appear on the home page
+- **Location**: `src/core/config/dashboardConfigs.ts`
 
-- [Features](#features)
-- [Architecture](#architecture)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Deployment](#deployment)
-- [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
+### 2. Routing (`App.tsx`)
+- **Purpose**: Maps URLs to dashboard components
+- **Controls**: Which URL paths work and what they render
+- **Location**: `src/app/App.tsx`
 
-## ✨ Features
+### 3. Dashboard Component Folder
+- **Purpose**: Contains the actual dashboard implementation
+- **Location**: `src/features/copilot-agents/dashboards/{dashboard-name}/`
 
-### Frontend (React TypeScript)
-- **Conversation Evaluation Trigger**: Intuitive interface to initiate evaluations
-- **Real-time Status Tracking**: Live progress updates during evaluation
-- **Interactive Dashboard**: Visualize metrics and trends from Application Insights
-- **Conversation Transcript Viewer**: View full conversation history with role-based formatting
-- **Modern UI**: Built with Microsoft Fluent UI components
-- **Theme Support**: Light and dark mode
-- **Responsive Design**: Works on desktop and mobile devices
+## 🔄 How the Routing Flow Works
 
-### Backend (Azure Functions)
-- **CORS Proxy**: Handles cross-origin requests to Azure services
-- **Query Insights**: Executes KQL queries against Application Insights
-- **Trigger Evaluation**: Initiates PowerShell runbook via webhook
-- **Get Transcript**: Retrieves and formats conversation transcripts
-
-### Evaluation Engine (PowerShell Runbook)
-- **Azure OpenAI Integration**: Intelligent conversation analysis
-- **Multi-dimensional Scoring**: Evaluates across multiple quality metrics
-- **Application Insights Logging**: All results stored for reporting
-- **Webhook-triggered**: Automated execution on demand
-
-## 🏗️ Architecture
+### Step-by-Step Navigation Flow:
 
 ```
-┌─────────────────────┐
-│   React Frontend    │
-│  (TypeScript/Vite)  │
-└──────────┬──────────┘
-           │
-           ↓
-┌─────────────────────┐
-│  Azure Functions    │
-│   (CORS Proxy)      │
-└──────┬────────┬─────┘
-       │        │
-       ↓        ↓
-┌──────────┐ ┌──────────────────┐
-│   App    │ │ Azure Automation │
-│ Insights │ │    (Runbook)     │
-└──────────┘ └────────┬─────────┘
-                      │
-                      ↓
-              ┌────────────────┐
-              │  Azure OpenAI  │
-              └────────────────┘
+1. User lands on Home Page
+   ↓
+2. HomePage.tsx renders tiles from DASHBOARD_CONFIGS array
+   ↓
+3. User clicks "View Dashboard" button
+   ↓
+4. Button calls navigate(dashboard.route)
+   Example: navigate('/dashboard/legal-case-management')
+   ↓
+5. React Router matches URL to a <Route> in App.tsx
+   ↓
+6. Route's element is <ProtectedRoute> with requiredRoles
+   ↓
+7. ProtectedRoute checks user's roles via AuthContext
+   ↓
+8. If authorized: renders <LegalCaseManagementDashboard />
+   If not authorized: redirects to unauthorized page
+   ↓
+9. Dashboard component loads (lazy loaded for performance)
+   ↓
+10. Dashboard fetches data using its own api.ts
 ```
 
-## 📁 Project Structure
+### Visual Flow Diagram:
 
 ```
-Evaluation project final/
-├── Eval Website Typescript React/    # Frontend application
-│   ├── src/
-│   │   ├── components/               # React components
-│   │   │   ├── ConversationEvaluator/
-│   │   │   ├── Dashboard/
-│   │   │   ├── StatusTracker/
-│   │   │   ├── TranscriptViewer/
-│   │   │   └── Layout/
-│   │   ├── services/                 # API integration
-│   │   ├── hooks/                    # Custom React hooks
-│   │   └── utils/                    # Utilities
-│   ├── package.json
-│   ├── vite.config.ts
-│   └── README.md
-│
-├── Eval Functions/                   # Azure Functions backend
-│   ├── src/
-│   │   └── functions/
-│   │       ├── QueryInsights.js
-│   │       ├── TriggerEvaluation.js
-│   │       └── GetConversationTranscript.js
-│   ├── package.json
-│   ├── host.json
-│   └── DEPLOYMENT_README.md
-│
-├── Eval PS script/                   # PowerShell runbook
-│   └── Conversation Evaluation Script for Runbook.ps1
-│
-└── README.md                         # This file
+┌─────────────────────────────────────────────────────────────────┐
+│ HOME PAGE (HomePage.tsx)                                        │
+│                                                                 │
+│ Reads DASHBOARD_CONFIGS array                                  │
+│ Renders cards for each dashboard                               │
+│                                                                 │
+│ [Legal Case Management]  [Finance]  [Healthcare]               │
+│                                                                 │
+│ onClick={() => navigate(dashboard.route)}                      │
+└──────────────────────┬──────────────────────────────────────────┘
+                       │
+                       ↓ navigate('/dashboard/legal-case-management')
+                       │
+┌──────────────────────┴──────────────────────────────────────────┐
+│ ROUTING (App.tsx)                                               │
+│                                                                 │
+│ <Route path="/dashboard/legal-case-management"                 │
+│   element={                                                     │
+│     <ProtectedRoute requiredRoles={[...LEGAL_USERS]}>         │
+│       <LegalCaseManagementDashboard />                         │
+│     </ProtectedRoute>                                           │
+│   }                                                             │
+│ />                                                              │
+└──────────────────────┬──────────────────────────────────────────┘
+                       │
+                       ↓ Check user roles
+                       │
+┌──────────────────────┴──────────────────────────────────────────┐
+│ PROTECTED ROUTE (ProtectedRoute.tsx)                           │
+│                                                                 │
+│ const { user, hasRole } = useAuth();                           │
+│                                                                 │
+│ if (!hasRole(requiredRoles)) {                                 │
+│   return <Navigate to="/unauthorized" />                       │
+│ }                                                               │
+│                                                                 │
+│ return children; // Render dashboard                           │
+└──────────────────────┬──────────────────────────────────────────┘
+                       │
+                       ↓ User authorized
+                       │
+┌──────────────────────┴──────────────────────────────────────────┐
+│ DASHBOARD COMPONENT                                             │
+│ (LegalCaseManagementDashboard.tsx)                             │
+│                                                                 │
+│ - Renders dashboard UI                                          │
+│ - Fetches data using ./api.ts                                  │
+│ - Calls solution_legal_* functions                             │
+│ - Displays KPIs, charts, tables                                │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-## 🔧 Prerequisites
+## ➕ Adding a New Dashboard
 
-### General Requirements
-- **Azure Subscription** with permissions to create and manage resources
-- **Node.js 18+** and npm
-- **Git** for version control
+### Step 1: Copy an Existing Dashboard Folder
 
-### Azure Resources Required
-1. **Azure OpenAI Service**
-   - GPT-4 or GPT-3.5-turbo deployment
-   - API endpoint and key
-
-2. **Application Insights**
-   - For conversation data storage
-   - For evaluation results logging
-   - API access configured (App ID and API Key)
-
-3. **Azure Automation Account**
-   - PowerShell runbook support
-   - Webhook enabled
-   - Managed identity or service principal for OpenAI access
-
-4. **Azure Function App**
-   - Node.js 18+ runtime
-   - Consumption or Premium plan
-   - CORS configured for your frontend domain
-
-5. **Azure Static Web Apps** (Optional)
-   - For frontend hosting
-   - Or use any static hosting service
-
-## 🚀 Installation
-
-### 1. Clone the Repository
+Copy a similar dashboard as your template to reduce development overhead:
 
 ```bash
-git clone <your-repository-url>
-cd "Evaluation project final"
+# Navigate to dashboards folder
+cd src/features/copilot-agents/dashboards
+
+# Copy an existing dashboard
+cp -r legal newdashboard
+
+# Or on Windows PowerShell:
+Copy-Item -Path legal -Destination newdashboard -Recurse
 ```
 
-### 2. Install Frontend Dependencies
+### Step 2: Update the Dashboard Files
 
-```bash
-cd "Eval Website Typescript React"
-npm install
+In `src/features/copilot-agents/dashboards/newdashboard/`:
+
+**1. Rename main component file:**
+```
+LegalCaseManagementDashboard.tsx → NewDashboard.tsx
 ```
 
-> **📖 Frontend Setup:** See [Eval Website Typescript React/SETUP_GUIDE.md](Eval%20Website%20Typescript%20React/SETUP_GUIDE.md) for detailed frontend configuration instructions.
-
-### 3. Install Backend Dependencies
-
-```bash
-cd "../Eval Functions"
-npm install
+**2. Update the component:**
+```typescript
+// NewDashboard.tsx
+export const NewDashboard: React.FC = () => {
+  const [timeRange, setTimeRange] = useState('7d');
+  const dashboardConfig = getDashboardConfig('new-dashboard'); // ← Update ID
+  
+  // ... rest of component
+};
 ```
 
-## ⚙️ Configuration
+**3. Create `api.ts` for dashboard-specific API calls:**
+```typescript
+// api.ts
+import axios from 'axios';
 
-### Frontend Configuration
+const FUNCTION_APP_URL = import.meta.env.VITE_FUNCTION_APP_URL;
+const APP_INSIGHTS = import.meta.env.VITE_NEWDASHBOARD_APP_INSIGHTS;
 
-> **📖 Complete Setup Guide:** See [Eval Website Typescript React/SETUP_GUIDE.md](Eval%20Website%20Typescript%20React/SETUP_GUIDE.md) for detailed instructions.
-
-Copy `app.env` to `.env` and update values in `Eval Website Typescript React/`:
-
-```bash
-# Copy the template
-cp app.env .env
-```
-
-Update `.env`:
-
-```env
-# Set to false for production use
-VITE_ENABLE_DEMO_MODE=false
-
-# Azure Function App URL (your CORS proxy)
-VITE_API_BASE_URL=https://your-function-app.azurewebsites.net/api
-
-# Optional: Polling interval for status updates (milliseconds)
-VITE_POLLING_INTERVAL=5000
-```
-
-**Where to get values:**
-- `VITE_API_BASE_URL`: Azure Portal → Your Function App → Overview → URL + `/api`
-
-> **Note:** `app.env` is the template (safe to commit). `.env` is your personal config (in .gitignore, never commit).
-
-### Backend Configuration (Azure Functions)
-
-Set these in Azure Function App → Configuration → Application Settings:
-
-```
-APP_ID=<Application Insights App ID>
-API_KEY=<Application Insights API Key>
-WEBHOOK_URL=<Azure Automation Webhook URL>
-ALLOWED_ORIGINS=https://your-frontend-domain.com
-```
-
-### PowerShell Runbook Configuration
-
-Edit `Conversation Evaluation Script for Runbook.ps1` lines 13-20:
-
-```powershell
-$AppId = "your-app-insights-app-id"
-$ApiKey = "your-app-insights-api-key"
-$InstrumentationKey = "your-app-insights-instrumentation-key"
-$AzureOpenAIEndpoint = "https://your-resource.openai.azure.com"
-$AzureOpenAIApiKey = "your-openai-api-key"
-$DeploymentName = "your-deployment-name"
-$ApiVersion = "2024-02-15-preview"
-```
-
-**⚠️ Security Recommendation**: Store these values in Azure Key Vault and use Managed Identity to retrieve them instead of hardcoding.
-
-## 📦 Deployment
-
-### Deploy Azure Functions
-
-#### Option 1: Using Deployment Script (PowerShell)
-
-```powershell
-cd "Eval Functions"
-.\deploy-new-function.ps1 -FunctionAppName "your-function-app-name"
-```
-
-#### Option 2: Using Azure CLI
-
-```bash
-cd "Eval Functions"
-
-# Login to Azure
-az login
-
-# Deploy
-az functionapp deployment source config-zip \
-    --resource-group your-resource-group \
-    --name your-function-app-name \
-    --src deployment.zip \
-    --build-remote true
-```
-
-#### Option 3: VS Code Azure Functions Extension
-
-1. Install Azure Functions extension
-2. Sign in to Azure
-3. Right-click Function App → Deploy to Function App
-
-### Deploy PowerShell Runbook
-
-1. Open Azure Portal → Azure Automation Account
-2. Go to **Process Automation → Runbooks**
-3. Click **+ Create a runbook**
-4. Name: `ConversationEvaluationRunbook`
-5. Type: **PowerShell**
-6. Runtime version: **7.2** (or latest)
-7. Paste the script content from `Conversation Evaluation Script for Runbook.ps1`
-8. Click **Save** → **Publish**
-9. Go to **Webhooks** → **Add webhook**
-10. Copy the webhook URL (save it securely - it won't be shown again)
-
-### Deploy Frontend
-
-#### Option 1: Azure Static Web Apps
-
-```bash
-cd "Eval Website Typescript React"
-
-# Build the app
-npm run build
-
-# Deploy using Azure Static Web Apps CLI or GitHub Actions
-```
-
-#### Option 2: Manual Build & Host
-
-```bash
-cd "Eval Website Typescript React"
-
-# Build
-npm run build
-
-# The dist/ folder contains production files
-# Upload to your hosting service (Azure Blob Storage, Netlify, Vercel, etc.)
-```
-
-## 📖 Usage
-
-### Starting the Frontend Locally
-
-```bash
-cd "Eval Website Typescript React"
-npm run dev
-```
-
-Access at `http://localhost:5173`
-
-### Running an Evaluation
-
-1. **Enter Conversation ID**: Input the conversation ID you want to evaluate
-2. **Click "Run Evaluation"**: Triggers the evaluation process
-3. **Monitor Status**: Watch real-time progress updates
-4. **View Results**: Check the dashboard for evaluation metrics
-
-### Viewing Conversation Transcripts
-
-1. Navigate to the Transcript Viewer
-2. Enter conversation ID
-3. View formatted conversation history with timestamps
-
-### Analyzing Dashboard Metrics
-
-The dashboard displays:
-- Recent evaluation results
-- Overall quality scores
-- Metric breakdowns (helpfulness, professionalism, etc.)
-- Trend analysis over time
-- Pass/fail rates
-
-## 📚 API Documentation
-
-### Azure Functions Endpoints
-
-#### 1. Query Insights
-
-```http
-POST /api/query-insights
-Content-Type: application/json
-
-{
-  "query": "customEvents | where name == 'EvaluationCompleted' | take 10",
-  "timespan": "P7D"
-}
-```
-
-**Response:**
-```json
-{
-  "tables": [...],
-  "statistics": {...}
-}
-```
-
-#### 2. Trigger Evaluation
-
-```http
-POST /api/trigger-evaluation
-Content-Type: application/json
-
-{
-  "conversationId": "conv-12345",
-  "requestId": "req-67890"
-}
-```
-
-**Response:**
-```json
-{
-  "jobId": "webhook-job-123",
-  "status": "initiated",
-  "message": "Evaluation started",
-  "conversationId": "conv-12345"
-}
-```
-
-#### 3. Get Conversation Transcript
-
-```http
-GET /api/get-transcript?conversationId=conv-12345
-```
-
-**Response:**
-```json
-{
-  "conversationId": "conv-12345",
-  "transcript": [
-    {
-      "timestamp": "2024-01-15T10:30:00Z",
-      "role": "user",
-      "message": "I need help with my order"
+const createNewDashboardClient = () => {
+  return axios.create({
+    baseURL: FUNCTION_APP_URL,
+    timeout: 180000,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-AppInsights-Connection': APP_INSIGHTS,
     },
-    {
-      "timestamp": "2024-01-15T10:30:15Z",
-      "role": "assistant",
-      "message": "I'd be happy to help you with your order..."
-    }
-  ],
-  "summary": {
-    "totalMessages": 10,
-    "userMessages": 5,
-    "botMessages": 5
-  }
+  });
+};
+
+export const getNewDashboardPerformance = async (
+  agentName: string,
+  timeRange: string
+) => {
+  const client = createNewDashboardClient();
+  const response = await client.post('/api/solution_newdashboard_GetAgentPerformance', {
+    agentName,
+    timeRange,
+  });
+  return response.data;
+};
+
+// Add more dashboard-specific functions...
+```
+
+**4. Customize components folder:**
+Update any dashboard-specific components in the `components/` subfolder.
+
+### Step 3: Add to Dashboard Config (`dashboardConfigs.ts`)
+
+Add a new config object to the `DASHBOARD_CONFIGS` array:
+
+```typescript
+export const DASHBOARD_CONFIGS: DashboardConfig[] = [
+  // ... existing dashboards
+  
+  // Your new dashboard
+  {
+    id: 'new-dashboard',                          // ← Unique ID
+    name: 'New Dashboard Name',                   // ← Display name
+    description: 'Monitor new dashboard features', // ← Description
+    industry: 'Your Industry',                    // ← Industry name
+    icon: 'Settings',                             // ← FluentUI icon name
+    agentName: 'New Dashboard Agent',             // ← Agent name
+    route: '/dashboard/new-dashboard',            // ← URL route
+    requiredRoles: [                              // ← Azure AD roles
+      UserRole.ADMINISTRATOR,
+      UserRole.NEWDASHBOARD_USERS,
+    ],
+    color: '#FF6B00',                             // ← Brand color
+    appInsightsEnvVar: 'VITE_NEWDASHBOARD_APP_INSIGHTS',
+    functionAppEnvVar: 'VITE_NEWDASHBOARD_FUNCTION_APP_URL',
+    kpis: [
+      {
+        id: 'kpi-1',
+        name: 'KPI Name',
+        description: 'KPI description',
+        metric: 'metricName',
+        target: 100,
+        format: 'number',
+      },
+      // ... more KPIs
+    ],
+    features: [
+      { id: 'feature-1', name: 'Feature Name', enabled: true },
+      // ... more features
+    ],
+  },
+];
+```
+
+### Step 4: Add User Role (`AuthContext.tsx`)
+
+Add the new role to the `UserRole` enum:
+
+```typescript
+export enum UserRole {
+  ADMINISTRATOR = 'Administrator',
+  LEGAL_USERS = 'LegalUsers',
+  // ... existing roles
+  NEWDASHBOARD_USERS = 'NewDashboardUsers', // ← Add this
 }
 ```
 
-## 🐛 Troubleshooting
+And update the dev user mock to include the new role:
 
-### Common Issues
-
-#### CORS Errors
-- Verify `ALLOWED_ORIGINS` is set correctly in Azure Functions
-- Check that frontend URL matches exactly (including https://)
-- Ensure CORS is enabled in Azure Function App settings
-
-#### Webhook Not Triggering
-- Verify webhook URL is correct in Function App configuration
-- Check runbook is published in Azure Automation
-- Ensure webhook is not expired
-- Review Azure Automation job history for errors
-
-#### Application Insights Query Failures
-- Verify App ID and API Key are correct
-- Check API key has read permissions
-- Ensure data exists for the query timespan
-- Validate KQL query syntax
-
-#### OpenAI API Errors
-- Verify endpoint URL and API key
-- Check deployment name matches your Azure OpenAI deployment
-- Ensure quota limits haven't been exceeded
-- Review runbook execution logs in Azure Automation
-
-### Debug Mode
-
-Enable debug logging in Azure Functions:
-
-```json
-{
-  "logging": {
-    "logLevel": {
-      "default": "Debug"
-    }
-  }
-}
+```typescript
+// In development mode mock user
+userRoles: [
+  UserRole.ADMINISTRATOR,
+  UserRole.LEGAL_USERS,
+  // ... existing roles
+  UserRole.NEWDASHBOARD_USERS, // ← Add this
+],
 ```
 
-View logs:
+### Step 5: Add Route in App.tsx
+
+**1. Add lazy import at the top:**
+```typescript
+const NewDashboard = lazy(() =>
+  import('../features/copilot-agents/dashboards/newdashboard/NewDashboard')
+);
+```
+
+**2. Add route in the Routes section:**
+```typescript
+<Routes>
+  <Route path="/" element={<HomePage />} />
+  
+  {/* Existing routes... */}
+  
+  {/* New Dashboard Route */}
+  <Route
+    path="/dashboard/new-dashboard"
+    element={
+      <ProtectedRoute
+        requiredRoles={[
+          UserRole.ADMINISTRATOR,
+          UserRole.NEWDASHBOARD_USERS,
+        ]}
+      >
+        <NewDashboard />
+      </ProtectedRoute>
+    }
+  />
+  
+  <Route path="*" element={<Navigate to="/" replace />} />
+</Routes>
+```
+
+### Step 6: Add Environment Variables
+
+**Frontend `.env`:**
 ```bash
-az webapp log tail --name your-function-app --resource-group your-rg
+VITE_NEWDASHBOARD_APP_INSIGHTS=InstrumentationKey=abc123;...
 ```
 
-## 🤝 Contributing
+**Function App (Azure Portal):**
+```bash
+NEWDASHBOARD_APPINSIGHTS_CONNECTION=...
+NEWDASHBOARD_DATABASE_CONNECTION=...
+NEWDASHBOARD_OPENAI_API_KEY=...
+```
 
-Contributions are welcome! Please follow these steps:
+### Step 7: Create Function App Functions
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Create functions in `functionapp/src/functions/`:
 
-## 📄 License
+```javascript
+// solution_newdashboard_GetAgentPerformance.js
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+const { app } = require('@azure/functions');
 
-## 🙏 Acknowledgments
+app.http('solution_newdashboard_GetAgentPerformance', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: 'solution_newdashboard_GetAgentPerformance',
+    handler: async (request, context) => {
+        // Read NEWDASHBOARD-specific env vars
+        const appInsights = process.env.NEWDASHBOARD_APPINSIGHTS_CONNECTION;
+        
+        // Your KQL queries and logic here
+        
+        return { status: 200, jsonBody: { /* data */ } };
+    }
+});
+```
 
-- **Microsoft Fluent UI** - Beautiful component library
-- **React Query** - Powerful data synchronization
-- **Azure Team** - Robust cloud services
-- **OpenAI** - Advanced language models
+## ➖ Removing a Dashboard
 
-## 📞 Support
+### Option 1: Hide Dashboard (Keep Code)
 
-For issues, questions, or contributions:
-- Open an issue in the GitHub repository
-- Review existing documentation in component READMEs
-- Check Azure service health if experiencing infrastructure issues
+**Remove only from `dashboardConfigs.ts`:**
+```typescript
+export const DASHBOARD_CONFIGS: DashboardConfig[] = [
+  // Comment out the dashboard config
+  /*
+  {
+    id: 'unwanted-dashboard',
+    name: 'Unwanted Dashboard',
+    // ... rest of config
+  },
+  */
+];
+```
 
-## 🔐 Security Considerations
+**Result:**
+- ✅ Tile disappears from home page
+- ✅ Route still works if user knows URL
+- ✅ Code remains for future use
 
-1. **Never commit secrets**: Use environment variables and Azure Key Vault
-2. **Rotate keys regularly**: Update API keys and webhook URLs periodically
-3. **Use Managed Identity**: Prefer managed identities over API keys where possible
-4. **Enable HTTPS only**: Ensure all endpoints use HTTPS
-5. **Implement authentication**: Add Azure AD authentication for production use
-6. **Monitor access logs**: Review Azure Function and Automation account logs regularly
+### Option 2: Fully Remove Dashboard
 
-## 🗺️ Roadmap
+**1. Remove from `dashboardConfigs.ts`** (see above)
 
-- [ ] Add authentication with Azure AD
-- [ ] Implement batch evaluation support
-- [ ] Add export functionality for reports
-- [ ] Create mobile app version
-- [ ] Add support for multiple language models
-- [ ] Implement custom evaluation criteria
-- [ ] Add webhook security validation
-- [ ] Create CI/CD pipeline templates
+**2. Remove from `App.tsx`:**
+```typescript
+// Comment out or delete the lazy import
+/*
+const UnwantedDashboard = lazy(() =>
+  import('../features/copilot-agents/dashboards/unwanted/UnwantedDashboard')
+);
+*/
 
----
+// Comment out or delete the route
+/*
+<Route
+  path="/dashboard/unwanted"
+  element={<ProtectedRoute ...><UnwantedDashboard /></ProtectedRoute>}
+/>
+*/
+```
 
-**Built with ❤️ for improving customer service quality**
+**3. Optionally delete dashboard folder:**
+```bash
+rm -rf src/features/copilot-agents/dashboards/unwanted
+```
+
+**4. Remove role from `AuthContext.tsx`** (optional)
+
+## 🎯 Key Benefits of This Architecture
+
+### 1. **Config-Driven**
+- Single source of truth for dashboard metadata
+- Easy to enable/disable dashboards
+
+### 2. **Copy-Paste Friendly**
+- Duplicate existing dashboard folder as template
+- Minimal changes needed to customize
+
+### 3. **Independent Dashboards**
+- Each dashboard is self-contained
+- Own components, API, functions
+- No cross-contamination
+
+### 4. **Role-Based Access**
+- Each dashboard can have different roles
+- ProtectedRoute enforces authorization
+- Easy to configure per client
+
+### 5. **Lazy Loading**
+- Only loads dashboard code when needed
+- Better initial page load performance
+- Automatic code splitting by Vite
+
+### 6. **Multi-Tenant Ready**
+- Clone base platform for each client
+- Keep only dashboards they need
+- Each deployment is independent
+
+## 📋 Quick Reference Checklist
+
+### Adding a New Dashboard:
+- [ ] Copy existing dashboard folder as template
+- [ ] Rename and update main component
+- [ ] Create `api.ts` with dashboard-specific functions
+- [ ] Add config to `dashboardConfigs.ts`
+- [ ] Add role to `UserRole` enum in `AuthContext.tsx`
+- [ ] Add lazy import to `App.tsx`
+- [ ] Add route to `App.tsx`
+- [ ] Add environment variables to `.env`
+- [ ] Create Function App functions (solution_{dashboard}_*)
+- [ ] Test the dashboard
+
+### Removing a Dashboard:
+- [ ] Remove from `dashboardConfigs.ts` (hide tile)
+- [ ] Optional: Remove from `App.tsx` (disable route)
+- [ ] Optional: Delete dashboard folder
+- [ ] Optional: Remove role from `AuthContext.tsx`
+
+## 🔧 Troubleshooting
+
+### Dashboard tile doesn't appear on home page
+-  Check `dashboardConfigs.ts` has the config
+-  Verify `HomePage.tsx` is mapping `DASHBOARD_CONFIGS`
+
+### Route returns 404 or redirects to home
+-  Check `App.tsx` has matching route
+-  Verify route path matches `dashboard.route` in config
+
+### "Access Denied" when clicking dashboard
+-  Check user has required role
+-  Verify `requiredRoles` in `ProtectedRoute` matches config
+-  Check AuthContext has user with correct roles
+
+### Dashboard loads but no data
+-  Check `api.ts` function names match Function App
+-  Verify environment variables are set correctly
+-  Check Function App has dashboard-specific functions
+-  Verify Function App environment variables
+
+## 💡 Best Practices
+
+1. **Naming Convention**
+   - Dashboard ID: `{industry}-{purpose}` (e.g., `legal-case-management`)
+   - Route: `/dashboard/{industry}-{purpose}`
+   - Function prefix: `solution_{industry}_`
+   - Role: `{INDUSTRY}_USERS`
+
+2. **File Organization**
+   ```
+   dashboards/{dashboard-name}/
+   ├── api.ts                    // Dashboard-specific API
+   ├── {DashboardName}.tsx       // Main component
+   ├── {DashboardName}.module.css
+   ├── components/               // Dashboard components
+   └── types.ts                  // Dashboard types (optional)
+   ```
+
+3. **Code Reuse**
+   - Copy similar dashboard as starting point
+   - Reuse shared components from `src/shared/components/`
+   - Use common hooks from `src/shared/hooks/`
+
+4. **Testing**
+   - Test with different user roles
+   - Verify data loading works
+   - Check responsive layout
+   - Test navigation flow
+
+This architecture makes it simple to scale from 1 to 20+ dashboards while keeping each one independent and maintainable! 🚀

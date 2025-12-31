@@ -1,0 +1,66 @@
+{
+  "id": "legal-case-management",
+  "name": "Legal Case Management Dashboard",
+  "industry": "Legal Services",
+  "agentName": "Legal Case Management Agent",
+  "description": "Monitor case intake, document review, and client communication automation",
+  "color": "#8B4513",
+  "appInsightsEnvVar": "VITE_LEGAL_APP_INSIGHTS",
+  "functionAppEnvVar": "VITE_LEGAL_FUNCTION_APP_URL",
+  "metrics": [
+    {
+      "id": "case_intake",
+      "title": "Case Intake Rate",
+      "description": "New cases processed by the AI agent",
+      "format": "number",
+      "target": 100,
+      "queryField": "totalConversations"
+    },
+    {
+      "id": "doc_review",
+      "title": "Documents Analyzed",
+      "description": "Legal documents reviewed",
+      "format": "number",
+      "target": 500,
+      "queryField": "documentCount"
+    },
+    {
+      "id": "response_time",
+      "title": "Client Response Time",
+      "description": "Average time to respond to client inquiries",
+      "format": "duration",
+      "target": 300,
+      "queryField": "avgResponseTime"
+    },
+    {
+      "id": "case_accuracy",
+      "title": "Case Classification Accuracy",
+      "description": "Accurate categorization of legal cases",
+      "format": "percentage",
+      "target": 95,
+      "queryField": "accuracyRate"
+    }
+  ],
+  "features": {
+    "caseTracking": {
+      "enabled": true,
+      "title": "Case Tracking",
+      "description": "Track case progress and status"
+    },
+    "documentAnalysis": {
+      "enabled": true,
+      "title": "Document Analysis",
+      "description": "AI-powered document review and categorization"
+    },
+    "complianceAlerts": {
+      "enabled": true,
+      "title": "Compliance Alerts",
+      "description": "Automated compliance monitoring and alerts"
+    }
+  },
+  "customization": {
+    "primaryColor": "#8B4513",
+    "secondaryColor": "#D2691E",
+    "chartColors": ["#8B4513", "#A0522D", "#CD853F", "#DEB887"]
+  }
+}

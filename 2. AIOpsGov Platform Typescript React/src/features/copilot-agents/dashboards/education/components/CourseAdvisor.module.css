@@ -1,0 +1,102 @@
+.card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.timeRange {
+  color: #666666;
+  font-style: italic;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.timelineItem {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+}
+
+.timelineItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 24px;
+  width: 2px;
+  height: calc(100% + 1.5rem);
+  background-color: #E0E0E0;
+}
+
+.timelineDot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.timelineContent {
+  flex: 1;
+  background-color: #F9F9F9;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.timelineHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.successRate {
+  color: #107C10;
+  font-weight: 600;
+}
+
+.timelineStats {
+  display: flex;
+  gap: 1.5rem;
+  color: #666666;
+}
+
+.empty {
+  text-align: center;
+  padding: 3rem;
+  color: #666666;
+}
+
+/* Scrollbar styling */
+.timeline::-webkit-scrollbar {
+  width: 8px;
+}
+
+.timeline::-webkit-scrollbar-track {
+  background: #F5F5F5;
+  border-radius: 4px;
+}
+
+.timeline::-webkit-scrollbar-thumb {
+  background: #CCCCCC;
+  border-radius: 4px;
+}
+
+.timeline::-webkit-scrollbar-thumb:hover {
+  background: #999999;
+}

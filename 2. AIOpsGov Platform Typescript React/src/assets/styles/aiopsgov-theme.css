@@ -1,0 +1,211 @@
+/**
+ * AIOpsGov Theme
+ * Professional black and white color scheme
+ */
+
+:root {
+  /* AIOpsGov Brand Colors */
+  --aiopsgov-black: #000000;
+  --aiopsgov-black-light: #1a1a1a;
+  --aiopsgov-black-lighter: #333333;
+  --aiopsgov-white: #ffffff;
+  --aiopsgov-gray: #f5f5f5;
+  --aiopsgov-gray-dark: #4a4a4a;
+  --aiopsgov-gray-medium: #666666;
+  --aiopsgov-gray-light: #e5e5e5;
+  
+  /* Status Colors */
+  --aiopsgov-success: #28a745;
+  --aiopsgov-warning: #ffc107;
+  --aiopsgov-error: #dc3545;
+  --aiopsgov-info: #17a2b8;
+  
+  /* Shadows */
+  --aiopsgov-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --aiopsgov-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --aiopsgov-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+  
+  /* Spacing */
+  --aiopsgov-spacing-xs: 0.25rem;
+  --aiopsgov-spacing-sm: 0.5rem;
+  --aiopsgov-spacing-md: 1rem;
+  --aiopsgov-spacing-lg: 1.5rem;
+  --aiopsgov-spacing-xl: 2rem;
+  
+  /* Border Radius */
+  --aiopsgov-radius-sm: 4px;
+  --aiopsgov-radius-md: 8px;
+  --aiopsgov-radius-lg: 12px;
+  
+  /* Typography */
+  --aiopsgov-font-family: 'Arial', 'Helvetica Neue', sans-serif;
+  --aiopsgov-font-weight-normal: 400;
+  --aiopsgov-font-weight-medium: 500;
+  --aiopsgov-font-weight-bold: 700;
+}
+
+/* Global Overrides */
+body {
+  font-family: var(--aiopsgov-font-family);
+  background-color: var(--aiopsgov-white);
+  color: var(--aiopsgov-black);
+}
+
+/* Override Fluent UI Primary Color */
+.fui-Button__root[appearance="primary"],
+.fui-Button--primary {
+  background-color: var(--aiopsgov-black) !important;
+  border-color: var(--aiopsgov-black) !important;
+  color: var(--aiopsgov-white) !important;
+}
+
+.fui-Button__root[appearance="primary"]:hover,
+.fui-Button--primary:hover {
+  background-color: var(--aiopsgov-black-lighter) !important;
+  border-color: var(--aiopsgov-black-lighter) !important;
+}
+
+.fui-Button__root[appearance="primary"]:active,
+.fui-Button--primary:active {
+  background-color: var(--aiopsgov-black-lighter) !important;
+}
+
+/* Secondary Buttons - Use Gray */
+.fui-Button__root[appearance="secondary"],
+.fui-Button--secondary {
+  color: var(--aiopsgov-black) !important;
+  border-color: var(--aiopsgov-gray-medium) !important;
+}
+
+.fui-Button__root[appearance="secondary"]:hover,
+.fui-Button--secondary:hover {
+  background-color: var(--aiopsgov-gray) !important;
+  color: var(--aiopsgov-black) !important;
+}
+
+/* Card Styling */
+.fui-Card {
+  border-radius: var(--aiopsgov-radius-md) !important;
+  box-shadow: var(--aiopsgov-shadow-sm) !important;
+  border: 1px solid var(--aiopsgov-gray-light) !important;
+  background-color: var(--aiopsgov-white) !important;
+}
+
+.fui-Card:hover {
+  box-shadow: var(--aiopsgov-shadow-md) !important;
+}
+
+/* Badge Colors */
+.fui-Badge[color="success"],
+.fui-Badge--success {
+  background-color: var(--aiopsgov-success) !important;
+}
+
+.fui-Badge[color="warning"],
+.fui-Badge--warning {
+  background-color: var(--aiopsgov-warning) !important;
+}
+
+.fui-Badge[color="danger"],
+.fui-Badge--danger {
+  background-color: var(--aiopsgov-error) !important;
+}
+
+.fui-Badge[color="informative"],
+.fui-Badge--informative {
+  background-color: var(--aiopsgov-black) !important;
+}
+
+/* Input Fields */
+.fui-Input__root {
+  border-color: var(--aiopsgov-gray-light) !important;
+  border-radius: var(--aiopsgov-radius-sm) !important;
+}
+
+.fui-Input__root:focus-within {
+  border-color: var(--aiopsgov-black) !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Dropdown */
+.fui-Dropdown {
+  border-color: var(--aiopsgov-gray-light) !important;
+  border-radius: var(--aiopsgov-radius-sm) !important;
+}
+
+/* Links */
+a {
+  color: var(--aiopsgov-black);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--aiopsgov-gray-dark);
+  text-decoration: underline;
+}
+
+/* Progress Bars */
+.fui-ProgressBar {
+  background-color: var(--aiopsgov-gray-light) !important;
+}
+
+.fui-ProgressBar__bar {
+  background-color: var(--aiopsgov-black) !important;
+}
+
+/* Tables */
+.fui-Table {
+  border-radius: var(--aiopsgov-radius-md);
+  overflow: hidden;
+}
+
+.fui-TableHeader {
+  background-color: var(--aiopsgov-black) !important;
+  color: var(--aiopsgov-white) !important;
+}
+
+.fui-TableHeaderCell {
+  color: var(--aiopsgov-white) !important;
+  font-weight: var(--aiopsgov-font-weight-bold);
+  padding: 12px 16px;
+}
+
+.fui-TableRow:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Tabs */
+.fui-Tab[aria-selected="true"] {
+  color: var(--aiopsgov-black) !important;
+  border-bottom-color: var(--aiopsgov-black) !important;
+}
+
+/* Spinner */
+.fui-Spinner {
+  color: var(--aiopsgov-black) !important;
+}
+
+/* Focus Styles */
+*:focus-visible {
+  outline: 2px solid var(--aiopsgov-black) !important;
+  outline-offset: 2px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--aiopsgov-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--aiopsgov-black);
+  border-radius: var(--aiopsgov-radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--aiopsgov-black-lighter);
+}

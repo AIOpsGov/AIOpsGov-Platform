@@ -1,0 +1,17 @@
+{
+  "name": "conversation-eval-functions",
+  "version": "1.0.0",
+  "description": "Azure Functions V4",
+  "main": "src/functions/*.js",
+  "scripts": {
+    "start": "func start"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0",
+    "node-fetch": "^2.6.7",
+    "redis": "^4.7.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

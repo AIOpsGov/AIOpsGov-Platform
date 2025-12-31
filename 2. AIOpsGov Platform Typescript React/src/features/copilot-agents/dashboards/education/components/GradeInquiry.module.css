@@ -1,0 +1,110 @@
+.card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.count {
+  color: #666666;
+}
+
+.logContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.logItem {
+  padding: 1rem;
+  background-color: #F9F9F9;
+  border-radius: 6px;
+  border-left: 4px solid #8B4513;
+  transition: background-color 0.2s;
+}
+
+.logItem:hover {
+  background-color: #F0F0F0;
+}
+
+.logHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.conversationId {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.label {
+  color: #666666;
+}
+
+.logDetails {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detailLabel {
+  color: #666666;
+  font-weight: 600;
+}
+
+.timestamp {
+  color: #888888;
+  font-size: 0.75rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 3rem;
+  color: #666666;
+}
+
+/* Scrollbar styling */
+.logContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.logContainer::-webkit-scrollbar-track {
+  background: #F5F5F5;
+  border-radius: 4px;
+}
+
+.logContainer::-webkit-scrollbar-thumb {
+  background: #CCCCCC;
+  border-radius: 4px;
+}
+
+.logContainer::-webkit-scrollbar-thumb:hover {
+  background: #999999;
+}
+
+@media (max-width: 768px) {
+  .logDetails {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

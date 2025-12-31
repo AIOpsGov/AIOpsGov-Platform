@@ -1,0 +1,63 @@
+.metricCard {
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 150px;
+}
+
+.metricCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+.title {
+  color: #666666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cardBody {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.value {
+  line-height: 1;
+}
+
+.trend {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+}
+
+.trendIcon {
+  font-size: 1.25rem;
+}
+
+.subtitle {
+  color: #666666;
+  line-height: 1.4;
+}
+
+.target {
+  color: #888888;
+  font-size: 0.75rem;
+}

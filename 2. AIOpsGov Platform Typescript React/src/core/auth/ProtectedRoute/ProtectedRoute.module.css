@@ -1,0 +1,60 @@
+/**
+ * Protected Route Styles
+ */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 2rem;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.accessDenied {
+  max-width: 600px;
+  padding: 3rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.icon {
+  margin-bottom: 1rem;
+}
+
+.deniedTitle {
+  color: #d13438;
+}
+
+.deniedMessage {
+  color: #333;
+}
+
+.deniedInfo {
+  color: #666;
+  font-style: italic;
+}
+
+.deniedContact {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .accessDenied {
+    padding: 2rem;
+  }
+  
+  .deniedTitle {
+    font-size: 1.5rem;
+  }
+}

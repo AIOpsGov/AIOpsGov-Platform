@@ -1,0 +1,80 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.headerTitleSection {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.headerIcon {
+  font-size: 48px;
+  color: white;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mainTitle {
+  color: white;
+}
+
+.subtitle {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.industry {
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+}
+
+.headerActions {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .headerActions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 1.5rem;
+  }
+
+  .headerTitleSection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .headerIcon {
+    font-size: 36px;
+  }
+
+  .mainTitle {
+    font-size: 1.5rem !important;
+  }
+}
